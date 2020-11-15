@@ -1,6 +1,6 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import { getAllTodos } from '../../businessLogic/todos'
+import { getTodo } from '../../businessLogic/todos'
 import { createLogger } from '../../utils/logger'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
@@ -15,7 +15,9 @@ export const handler = middy(
     const split = authorization.split(' ')
     const jwtToken = split[1]
 
-    const toDos = await getAllTodos(jwtToken)
+    const todoId = event.pathParameters.todoId
+
+    const toDos = await getTodo(todoId, jwtToken)
 
     return {
       statusCode: 200,
