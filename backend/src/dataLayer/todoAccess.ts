@@ -1,4 +1,5 @@
 import * as AWS  from 'aws-sdk'
+import * as AWSXRAY from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { Types } from 'aws-sdk/clients/s3'
 import 'source-map-support/register'
@@ -7,12 +8,13 @@ import { TodoUpdate } from '../models/TodoUpdate'
 import { createLogger } from '../utils/logger'
 
 const logger = createLogger('todosAccess')
+const XAWS = AWSXRAY.captureAWS(AWS)
 
 export class TodoAccess {
 
   constructor(
-    private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient(),
-    private readonly s3Client: Types = new AWS.S3({ signatureVersion: 'v4' }),
+    private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
+    private readonly s3Client: Types = new XAWS.S3({ signatureVersion: 'v4' }),
     private readonly s3BucketName = process.env.ATTACHMENTS_S3_BUCKET,
     private readonly todosTable = process.env.TODOS_TABLE,
     private readonly userIndex = process.env.USER_ID_INDEX
