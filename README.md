@@ -193,7 +193,7 @@ TodosTable:
     BillingMode: PAY_PER_REQUEST
     TableName: ${self:provider.environment.TODOS_TABLE}
     LocalSecondaryIndexes:
-      - IndexName: ${self:provider.environment.INDEX_NAME}
+      - IndexName: ${self:provider.environment.USER_ID_INDEX}
         KeySchema:
           - AttributeName: partitionKey
             KeyType: HASH
